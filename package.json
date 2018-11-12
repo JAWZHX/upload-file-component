@@ -1,0 +1,21 @@
+{
+  "name": "upload-component",
+  "version": "1.0.0",
+  "description": "一个上传组件",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/server/index.js"
+  },
+  "keywords": [
+    "upload"
+  ],
+  "author": "1219251709@qq.com",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0"
+  },
+  "devDependencies": {
+  }
+}
