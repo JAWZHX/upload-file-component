@@ -6,7 +6,7 @@ const app = new Koa();
 const router = new Router();
 
 // 搭建静态服务器
-app.use(require('koa-static')(path.resolve(__dirname, '../pages')));
+app.use(require('koa-static')(path.resolve(__dirname, '../public')));
 
 app
   .use(router.routes())

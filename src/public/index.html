@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>上传组件</title>
+  <link rel="stylesheet" href="./../assets/font/iconfont.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    .clear {
+      clear: both;
+      height: 0;
+      line-height: 0;
+      font-size: 0;
+    }
+    .bg {
+      background-color: #3E66BE;
+      padding: 65px 70px;
+    }
+    .upload-container {
+      background-color: #FFFFFF;
+      border-radius: 8px;
+      padding: 20px 30px;
+    }
+    #upload-btn {
+      float: right;
+      padding: 5px;
+      border-radius: 4px;
+      background-color: #5587F8;
+      border: 1px solid #5587F8;
+      color: white;
+      cursor: pointer;
+      box-shadow: 1px 8px 10px #CDD8ED;
+    }
+    .tip-box {
+      border: 1px dashed #5072C1;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      padding: 25px;
+      text-align: center;
+      cursor: pointer;
+      color: #5072C1;
+    }
+    .line {
+      height: 10px;
+      margin: 0 -28px;
+      box-shadow: 0 6px 10px #E4E9F6;
+    }
+    #progress {
+      padding: 30px 0 10px 0;
+    }
+    .progress-bg {
+      height: 2px;
+      background-color: #E5E7EB;
+    }
+
+    .progress-active {
+      width: 40%;
+      height: 2px;
+      background-color: #3C65BD;
+      position: relative;
+    }
+
+    .progress-active::after {
+      display: block;
+      content: "40%";
+      position: absolute;
+      right: -20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg">
+    <div class="upload-container">
+        <button id="upload-btn">上传文件</button>
+        <div class="clear"></div>
+        <input type="file" name="file-upload" id="file-upload" multiple style="display:none;">
+        <div class="tip-box">
+          <span class="iconfont icon-select-file"></span>
+          <p>请点击选择文件</p>
+        </div>
+        <div class="line"></div>
+        <div id="progress">
+          <div class="progress-bg">
+            <div class="progress-active"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  <script>
+    // 获取上传元素
+    var uploadEl = document.getElementById('file-upload');
+    // 获取上传按钮
+    var uploadBtn = document.getElementById('upload-btn');
+    // 获取触发选择文件的元素
+    var selectFileEl = document.querySelector('.tip-box');
+    // 监听 selectFileEl 的点击事件
+    selectFileEl.addEventListener('click', function(event){
+      // 触发 uploadEl 的 点击事件
+      uploadEl.click();
+    }, false);
+    // 监听 uploadEl 的 change 事件
+    uploadEl.addEventListener('change', function(event) {
+      var fileList = uploadEl.files;
+      console.log(uploadEl.files);
+      // fileList[0].name = "文件名"
+      // fileList[0].size = "文件大小"（单位为k）
+      // fileList[0].type.split('/')[1] = "文件类型"
+    }, false);
+    // 监听 uploadBtn 的点击事件
+    uploadBtn.addEventListener('click', function(event) {
+      // 获取 formdata
+      var formData = new FormData(uploadEl);
+      // 
+    }, false)
+  </script>
+</body>
+</html>
