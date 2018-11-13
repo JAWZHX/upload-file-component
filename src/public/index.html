@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +18,7 @@
       line-height: 0;
       font-size: 0;
     }
-    .bg {
+    .upload {
       background-color: #3E66BE;
       padding: 65px 70px;
     }
@@ -71,27 +72,79 @@
       position: absolute;
       right: -20px;
     }
+    .file-box {
+      border: 1px dashed #5072C1;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      padding: 25px;
+      display: none;
+    }
+    .file-box .file {
+      width: 90px;
+      height: 75px;
+      display: inline-block;
+      vertical-align: bottom;
+      position: relative;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .file-box .file .file-img {
+      font-size: 50px;
+      color: red;
+      position: absolute;
+      top: 0;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+    }
+    .file-box .file .file-img .icon-delete {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: black;
+      font-size: 0;
+      cursor: pointer;
+    }
+    .file-box .file .file-img:hover .icon-delete{
+      font-size: 20px;
+    }
+    .file-box .file .file-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
+
 <body>
-  <div class="bg">
+  <div class="upload">
     <div class="upload-container">
-        <button id="upload-btn">上传文件</button>
-        <div class="clear"></div>
-        <input type="file" name="file-upload" id="file-upload" multiple style="display:none;">
-        <div class="tip-box">
-          <span class="iconfont icon-select-file"></span>
-          <p>请点击选择文件</p>
+      <button id="upload-btn">上传文件</button>
+      <div class="clear"></div>
+      <input type="file" name="file-upload" id="file-upload" multiple style="display:none;">
+      <div class="tip-box">
+        <span class="iconfont icon-select-file"></span>
+        <p>请点击选择文件</p>
+      </div>
+      <div class="file-box">
+       
+      </div>
+      <div class="line"></div>
+      <div id="progress">
+        <div class="progress-bg">
+          <div class="progress-active"></div>
         </div>
-        <div class="line"></div>
-        <div id="progress">
-          <div class="progress-bg">
-            <div class="progress-active"></div>
-          </div>
-        </div>
+      </div>
     </div>
   </div>
-  
+
   <script>
     // 获取上传元素
     var uploadEl = document.getElementById('file-upload');
@@ -99,25 +152,82 @@
     var uploadBtn = document.getElementById('upload-btn');
     // 获取触发选择文件的元素
     var selectFileEl = document.querySelector('.tip-box');
+    // 获取文件盒子容器file-box
+    var fileBoxEl = document.querySelector('.file-box');
+    
+    // 文件显示图片映射
+    var imgMap = {
+      pdf: {icon: 'icon-pdf', color: 'red'},
+      jpeg: {icon: 'icon-jpg', color: '#D4237A'},
+      json: {icon: 'icon-json', color: '#26E8ED'},
+      plain: {icon: 'icon-txt', color: '#78AFF3'},
+      png: {icon: 'icon-png', color: '#1E7345'},
+      file: {icon: 'icon-file', color: '#1AFA29'},
+      gif: {icon: 'icon-gif', color: '#25C28F'}
+    }
+
+    // 构造 file
+    function createFileEl(fileTypeOfImg, fileName, iconColor) {
+      var fileEl = document.createElement('div');
+      fileEl.className = 'file';
+      var fileImg = document.createElement('span');
+      fileImg.classList.add('file-img');
+      fileImg.classList.add('iconfont');
+      fileImg.classList.add(fileTypeOfImg);
+      fileImg.style.color = iconColor;
+      var deleteBtn = document.createElement('span');
+      deleteBtn.classList.add('iconfont');
+      deleteBtn.classList.add('icon-delete');
+      fileImg.appendChild(deleteBtn);
+      var fileNameEl = document.createElement('span');
+      fileNameEl.className = 'file-name';
+      fileNameEl.innerText = fileName;
+      fileEl.appendChild(fileImg);
+      fileEl.appendChild(fileNameEl);
+      // 将 fileEl 添加到 file-box
+      fileBoxEl.appendChild(fileEl);
+    }
+
     // 监听 selectFileEl 的点击事件
-    selectFileEl.addEventListener('click', function(event){
+    selectFileEl.addEventListener('click', function (event) {
       // 触发 uploadEl 的 点击事件
       uploadEl.click();
     }, false);
+    
     // 监听 uploadEl 的 change 事件
-    uploadEl.addEventListener('change', function(event) {
+    uploadEl.addEventListener('change', function (event) {
       var fileList = uploadEl.files;
       console.log(uploadEl.files);
+      // 显示 file-box
+      fileBoxEl.style.display = "block";
+      // 隐藏 selectFileEl
+      selectFileEl.style.display = "none";
+      // 循环添加 fileEl
+      for (var i = 0; i < fileList.length; i++) {
+        var fileName = fileList[i].name;
+        var fileSize = fileList[i].size;
+        var fileType = fileList[i].type.split('/')[1];
+        var fileTypeOfImg = imgMap['file']['icon'];
+        var iconColor = imgMap['file']['color'];
+        if(Object.keys(imgMap).indexOf(fileType) !== -1) {
+          fileTypeOfImg = imgMap[fileType]['icon'];
+          iconColor = imgMap[fileType]['color'];
+        }
+        
+        createFileEl(fileTypeOfImg, fileName, iconColor);
+      }
       // fileList[0].name = "文件名"
       // fileList[0].size = "文件大小"（单位为k）
       // fileList[0].type.split('/')[1] = "文件类型"
     }, false);
+
     // 监听 uploadBtn 的点击事件
-    uploadBtn.addEventListener('click', function(event) {
+    uploadBtn.addEventListener('click', function (event) {
       // 获取 formdata
       var formData = new FormData(uploadEl);
       // 
     }, false)
   </script>
 </body>
+
 </html>
