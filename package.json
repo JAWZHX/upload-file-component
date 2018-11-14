@@ -17,5 +17,7 @@
     "koa-static": "^5.0.0"
   },
   "devDependencies": {
+    "busboy": "^0.2.14",
+    "lodash": "^4.17.11"
   }
 }

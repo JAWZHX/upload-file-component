@@ -193,7 +193,7 @@
       // 触发 uploadEl 的 点击事件
       uploadEl.click();
     }, false);
-    
+
     // 监听 uploadEl 的 change 事件
     uploadEl.addEventListener('change', function (event) {
       var fileList = uploadEl.files;
@@ -216,16 +216,30 @@
         
         createFileEl(fileTypeOfImg, fileName, iconColor);
       }
-      // fileList[0].name = "文件名"
-      // fileList[0].size = "文件大小"（单位为k）
-      // fileList[0].type.split('/')[1] = "文件类型"
     }, false);
 
     // 监听 uploadBtn 的点击事件
     uploadBtn.addEventListener('click', function (event) {
-      // 获取 formdata
-      var formData = new FormData(uploadEl);
-      // 
+      // 获取fileList
+      var fileList = uploadEl.files;
+      // 获取 formData
+      var formData = new FormData();
+      // formData.append('字段名', 'value', '文件名') 添加上传内容
+      for(var i = 0; i < fileList.length; i++) {
+        formData.append('file'+i, fileList[i], fileList[i].name);
+      }
+      // 测试回调监听
+      function reqListener() {
+        console.log(this.responseText);
+      }
+      // 使用 XHR 进行文件上传
+      var XHR = new XMLHttpRequest();
+      XHR.onload = reqListener;
+      XHR.open('post', '/uploadFile', true);
+      XHR.send(formData);
+      // fileList[0].name = "文件名"
+      // fileList[0].size = "文件大小"（单位为k）
+      // fileList[0].type.split('/')[1] = "文件类型"
     }, false)
   </script>
 </body>

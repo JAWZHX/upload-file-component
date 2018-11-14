@@ -1,9 +1,9 @@
 const Koa = require('koa');
-const Router = require('koa-router');
 const path = require('path');
 
+
 const app = new Koa();
-const router = new Router();
+const router = require('./routes');
 
 // 搭建静态服务器
 app.use(require('koa-static')(path.resolve(__dirname, '../public')));
