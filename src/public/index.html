@@ -11,36 +11,11 @@
 </head>
 
 <body>
-  <div class="upload">
-    <div class="upload-container">
-      <button id="upload-btn">上传文件</button>
-      <div class="clear"></div>
-      <input type="file" name="file-upload" id="file-upload" multiple style="display:none;">
-      <div class="tip-box">
-        <span class="iconfont icon-select-file"></span>
-        <p>请点击选择文件</p>
-      </div>
-      <div class="file-box">
+  <div class="upload-component">
 
-      </div>
-      <div class="success-box">
-        <span>ヽ(✿ﾟ▽ﾟ)ノ上传成功啦！！！</span><br>
-        <button>继续上传</button>
-      </div>
-      <div class="line"></div>
-      <div id="progress">
-        <div class="progress-bg">
-          <div class="progress-active" data-percent="0%"></div>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <script src="./js/index.js"></script>
-  <script>
-    // 初始化上传组件
-    wzhxUploadFileComponent.init();
-  </script>
+  <script src="./dist/bundle.js"></script>
 </body>
 
 </html>

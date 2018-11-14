@@ -4,7 +4,6 @@ const fs = require('fs');
 
 function upload(ctx) {
   const req = ctx.req;
-  const res = ctx.res;
   const busboy = new Busboy({ headers: req.headers });
 
   let data = {

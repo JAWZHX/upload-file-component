@@ -4,7 +4,8 @@
   "description": "一个上传组件",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/server/index.js"
+    "dev": "node src/server/index.js",
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [
     "upload"
@@ -17,7 +18,13 @@
     "koa-static": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "babel-loader": "^8.0.4",
     "busboy": "^0.2.14",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   }
 }
