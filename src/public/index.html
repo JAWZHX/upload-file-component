@@ -60,7 +60,7 @@
     }
 
     .progress-active {
-      width: 40%;
+      width: 0;
       height: 2px;
       background-color: #3C65BD;
       position: relative;
@@ -68,7 +68,7 @@
 
     .progress-active::after {
       display: block;
-      content: "40%";
+      content: attr(data-percent);
       position: absolute;
       right: -20px;
     }
@@ -139,7 +139,7 @@
       <div class="line"></div>
       <div id="progress">
         <div class="progress-bg">
-          <div class="progress-active"></div>
+          <div class="progress-active" data-percent="0%"></div>
         </div>
       </div>
     </div>
@@ -154,6 +154,8 @@
     var selectFileEl = document.querySelector('.tip-box');
     // 获取文件盒子容器file-box
     var fileBoxEl = document.querySelector('.file-box');
+    // 获取进度条元素
+    var progressEl = document.querySelector('.progress-active');
     
     // 文件显示图片映射
     var imgMap = {
@@ -228,13 +230,40 @@
       for(var i = 0; i < fileList.length; i++) {
         formData.append('file'+i, fileList[i], fileList[i].name);
       }
-      // 测试回调监听
-      function reqListener() {
-        console.log(this.responseText);
+      // (load)回调监听
+      function loadListener(event) {
+        console.log('load');
+        console.log(event);
+      }
+      // (progress)回调监听
+      function progressListener(event) {
+        console.log('progress');
+        console.log(event);
+        if(event.lengthComputable) {
+          var percentComplete = Math.round(event.loaded / event.total * 100) + '%';
+          console.log(percentComplete);
+          // progressEl (UI变化)
+          progressEl.style.width = percentComplete;
+          // $('.red').attr('data-attr', 'green');
+          progressEl.setAttribute('data-percent', percentComplete);
+        }
+      }
+      // (abort)回调监听
+      function abortListener(event) {
+        console.log('abort');
+        console.log(event);
+      }
+      // (error) 回调监听
+      function errorListener(event) {
+        console.log('error');
+        console.log(event);
       }
       // 使用 XHR 进行文件上传
       var XHR = new XMLHttpRequest();
-      XHR.onload = reqListener;
+      XHR.upload.addEventListener('load', loadListener, false);
+      XHR.upload.addEventListener('progress', progressListener, false);
+      XHR.upload.addEventListener('abort', abortListener, false);
+      XHR.upload.addEventListener('error', errorListener, false);
       XHR.open('post', '/uploadFile', true);
       XHR.send(formData);
       // fileList[0].name = "文件名"
